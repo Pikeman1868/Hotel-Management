@@ -215,9 +215,16 @@ public class CreateUser extends javax.swing.JDialog {
                            "\nAccount Type: " + convertAccountType() +
                             "\n");
         SQLiteJDBC database = SQLiteJDBC.getInstance();
-        database.insert("USERS", user);
-        this.clearFields();
-        this.setVisible(false);
+            if(database.insert("USERS", user))
+            {
+                this.clearFields();
+                this.setVisible(false);
+                this.dispose();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "This username has already been taken.\nPlease Select another.");
+            }
         }
         
     }//GEN-LAST:event_createUserButtonActionPerformed

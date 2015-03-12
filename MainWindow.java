@@ -275,6 +275,8 @@ public class MainWindow extends javax.swing.JFrame {
         else if(!user.isLoggedIn())//(State == LOGGEDOUT)
         {
             user = guest;
+            emailTextField.setEnabled(true);
+            passwordTextField.setEnabled(true);
             emailTextField.setText(null);
             passwordTextField.setText(null);
             nameLabel.setText(user.GetFirstName());

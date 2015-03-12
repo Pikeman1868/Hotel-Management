@@ -50,7 +50,7 @@ public class SQLiteJDBC
               "FIRSTNAME  TEXT    NOT NULL, " + 
               /*" USERNAME PRIMARY KEY NOT NULL, " +*/
               "PASSWORD TEXT NOT NULL, " +
-              " EMAILADDRESS TEXT PRIMARY KEY NOT NULL, " + 
+              " EMAILADDRESS TEXT UNIQUE NOT NULL, " + 
               " ACCOUNTTYPE TEXT NOT NULL)";
       
       stmt.executeUpdate(sql);
@@ -67,8 +67,9 @@ public class SQLiteJDBC
      * Insert Data into the Data base.
      * @param TableName
      * @param user 
+     * @return boolean
      */
-    public void insert(String TableName,  UserInformation user)
+    public boolean insert(String TableName,  UserInformation user)
     {
       try
       {
@@ -88,6 +89,7 @@ public class SQLiteJDBC
               System.out.println(sql);
           stmt.executeUpdate(sql);
           }
+          return true;
           /*
           String sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) " +
                        "VALUES (1, 'Paul', 32, 'California', 20000.00 );"; 
@@ -111,10 +113,12 @@ public class SQLiteJDBC
       catch(SQLException e)
         {
             System.out.println("\nError: Username Already Exists");
+            return false;
         }
       catch ( Exception e ) 
       {
         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        return false;
         //System.exit(0);
       }
     }
