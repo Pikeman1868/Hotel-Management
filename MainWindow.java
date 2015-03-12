@@ -24,10 +24,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private SQLiteJDBC database =SQLiteJDBC.getInstance();
+    private SQLiteJDBC database = SQLiteJDBC.getInstance();
     private final UserInformation guest = new UserInformation("Guest", "Guest", "", "Guest", "Customer");
     private UserInformation user = guest;
-
+    private Hotel hotel = Hotel.getInstance();
+    
     /**
      * Creates new form MainWindow
      */
@@ -231,21 +232,23 @@ public class MainWindow extends javax.swing.JFrame {
             {
                 user = database.getUserInformation(emailTextField.getText());
                 try{
-                    if(user.GetPassword().equals(passwordTextField.getText()))
+                    if(user.login(emailTextField.getText(), passwordTextField.getText()))
                     {
-                        user.login();//State = LOGGEDIN;
+                        //State = LOGGEDIN;
                         //System.out.println("Welcome: " + user.GetFirstName());
                         this.update();
                     }
                     else
                     {
                         user.logout();//State = LOGGEDOUT;
+                        user = guest;
                         this.update();
                     }
                 }
                 catch(Exception e)
                 {
                    JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+                   user = guest;
                    this.update();
                 }
             }
@@ -299,14 +302,16 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        RoomOptions roomCreator = new RoomOptions(this, true);
-        roomCreator.setVisible(true);
+        //RoomOptions roomCreator = new RoomOptions(this, true);
+        //roomCreator.setVisible(true);
+        user.createRoom();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        RoomOptions roomCreator = new RoomOptions(this, true);
-        roomCreator.setVisible(true);
+        //RoomOptions roomCreator = new RoomOptions(this, true);
+        //roomCreator.setVisible(true);
+        user.updateRoom(new Room("314", 120.0, 4));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

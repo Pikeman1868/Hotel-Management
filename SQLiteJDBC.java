@@ -17,6 +17,10 @@ public class SQLiteJDBC
     private static SQLiteJDBC instance = new SQLiteJDBC(); 
     //private static ResultSet rs;
     
+    /**
+     * Get the instance of the SQL database.
+     * @return 
+     */
     public static SQLiteJDBC getInstance()
     {
         if(instance.equals(null))
@@ -115,6 +119,11 @@ public class SQLiteJDBC
       }
     }
     
+    /**
+     * Get a User's information from the database.
+     * @param Username
+     * @return 
+     */
     public UserInformation getUserInformation(String Username)
     {
             
@@ -177,20 +186,26 @@ public class SQLiteJDBC
     
     /**
      * Update the Data base row.
+     * @param User
+     * @return boolean
      */
-    public void UpdateDataBase()
+    public boolean updatePassword(UserInformation user)
     {
       try
       {
           stmt = c.createStatement();
-          String sql = "UPDATE COMPANY set SALARY = 25000.00 where ID=1;";
+          String sql = "UPDATE USERS set PASSWORD = '" + user.GetPassword() +
+                  "' where EMAILADDRESS='" + user.GetEmailAddress() +"';";
           stmt.executeUpdate(sql);
           c.commit();
+          return true;
       } 
       catch ( Exception e ) 
       {
-        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        System.exit(0);
+          System.out.println("Failed to change user Password.");
+          return false;
+        //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        //System.exit(0);
       }   
     }
     
@@ -236,6 +251,12 @@ public class SQLiteJDBC
         }
     }
     
+    /**
+     * Create a DefaultTableModel to pass into jTable objects.
+     * @param Table
+     * @return DefaultTableModel
+     * @throws SQLException 
+     */
     public DefaultTableModel buildTableModel(String Table)
         throws SQLException {
         
@@ -262,32 +283,9 @@ public class SQLiteJDBC
     return new DefaultTableModel(data, columnNames);
 }
     
-    public static int MenuSelection()
-    {
-        System.out.print("Enter Menu Option: ");
-        Scanner in = new Scanner(System.in);
-       return in.nextInt();
-    }
-    
-    public static void PrintMenu()
-    {
-        System.out.println("    SQL Menu");
-        System.out.println("*****************");
-        System.out.println(" 1 Display Graph");
-        System.out.println(" 2 Create User");
-        System.out.println(" 3 Existing User");
-        System.out.println(" 4 Delete User");
-        System.out.println(" 0 Exit App");
-        System.out.println("*****************");
-    }
-    
-    /*
-    public void CreateNewUser()
-    {
-        UserInformation user = new UserInformation("test", "Gilmore", "test", "address@email.com","Admin");
-        this.("USERS",user);
-    }
-    */
+    /**
+     * Private Constructor.
+     */
     private SQLiteJDBC()
     {
         try{

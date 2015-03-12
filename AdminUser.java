@@ -94,4 +94,23 @@ public class AdminUser implements UserFeatures {
     {
         
     }
+    
+    /**
+     * Produce a form to Create a new room.
+     */
+    public void createRoom()
+    {
+        RoomOptions roomCreator = new RoomOptions(null, true);
+        roomCreator.setVisible(true);
+    }
+    
+    /**
+     * Update a current Room's features.
+     * @param room 
+     */
+    public void updateRoom(Room room)
+    {
+        RoomOptions roomCreator = new RoomOptions(null, true, room);
+        roomCreator.setVisible(true);
+    }
 }

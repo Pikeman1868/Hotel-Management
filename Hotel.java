@@ -15,10 +15,24 @@ import java.util.NoSuchElementException;
 public class Hotel {
     private ArrayList<Room> ROOMS = new ArrayList();
     private int RoomCount = 0;
+    static Hotel instance = new Hotel();
     
-    public Hotel()
+    private Hotel()
     {
         
+    }
+    
+    /**
+     * Return the Static instance of this class.
+     * @return hotel
+     */
+    public static Hotel getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new Hotel();
+        }
+        return instance;
     }
     
     /**
@@ -40,25 +54,28 @@ public class Hotel {
         return RoomCount;
     }
     
+    /**
+     * Iterator Design Pattern
+     */
     private static class StepThrough implements Iterator{ 		
 		// start stepping through at i=0
                                 private Hotel s;
 		private int i = 0; 
 		
-                                 StepThrough(Hotel s1){
-                                      s = s1;
-                                 }
+                StepThrough(Hotel s1){
+                     s = s1;
+                }
                 
                 
 		public boolean hasNext(){
-                                        return i < s.getRoomCount();
-                                 }
+                    return i < s.getRoomCount();
+                }
                 
-                                public Object next() throws NoSuchElementException{
-                                       if (i<s.getRoomCount())
-                                            return s.ROOMS.get(i++);
-                                       else throw new NoSuchElementException();
-                                }
+                public Object next() throws NoSuchElementException{
+                       if (i<s.getRoomCount())
+                            return s.ROOMS.get(i++);
+                       else throw new NoSuchElementException();
+                }
                 
                 
                 

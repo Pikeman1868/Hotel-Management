@@ -35,6 +35,14 @@ public class UserInformation {
         
     }
     
+    /**
+     * UserInformation Constuctor.
+     * @param FirstName
+     * @param LastName
+     * @param Password
+     * @param EmailAddress
+     * @param AccountType 
+     */
     public UserInformation(String FirstName, String LastName, 
             String Password, String EmailAddress, String AccountType)
     {
@@ -65,16 +73,25 @@ public class UserInformation {
         loggedin = false;
     }
     
-    public void UpdateUserInformation(String Field, String UpdateContent)
+    /**
+     * Updates the User's password.
+     * This checks attempts to update the password in the database.
+     * if fails it restores old password and returns false.
+     * @param Field String
+     * @return boolean
+     */
+    public boolean updatePassword(String Field)
     {
-        if(Field.equals("PASSWORD"))
+        String temp = password;
+        password = Field;
+        SQLiteJDBC database = SQLiteJDBC.getInstance();
+        if(!database.updatePassword(this)) // faild to update database
         {
-            this.SetPassword(UpdateContent);
+            //set the password back to previous
+            password = temp;
+            return false;
         }
-        else if(Field.equals("EMAILADDRESS"))
-        {
-            this.SetEmailAddress(UpdateContent);
-        }
+        return true;
     }
     
     public boolean isLoggedIn()
@@ -87,9 +104,13 @@ public class UserInformation {
         loggedin = false;
     }
     
-    public void login()
+    public boolean login(String name, String Password)
     {
-        loggedin = true;
+        if(emailAddress.equals(name) && password.equals(Password))
+        {
+            return loggedin = true;
+        }
+        return loggedin = false;
     }
     
     public void SetFirstName(String FirstName)
@@ -165,5 +186,22 @@ public class UserInformation {
     {
         //do some calculations here
         return AccountBalance;
+    }
+    
+    /**
+     * Call the user's feature of createRoom()
+     */
+    public void createRoom()
+    {
+        feature.createRoom();
+    }
+    
+    /**
+     * Update and existing room's features
+     * @param room 
+     */
+    public void updateRoom(Room room)
+    {
+        feature.updateRoom(room);
     }
 }

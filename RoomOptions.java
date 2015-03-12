@@ -35,7 +35,7 @@ public class RoomOptions extends javax.swing.JDialog {
         newRoom = false;
         currentRoom = room;
         roomNumberField.setText(currentRoom.getRoomNumber());
-        
+        priceTextField.setText(Double.toString(currentRoom.getPrice()));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,6 +69,11 @@ public class RoomOptions extends javax.swing.JDialog {
         });
 
         CancelButton.setText("Cancel");
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelButtonActionPerformed(evt);
+            }
+        });
 
         bedSizeBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Twin", "Queen", "King" }));
         bedSizeBox.addActionListener(new java.awt.event.ActionListener() {
@@ -101,8 +106,7 @@ public class RoomOptions extends javax.swing.JDialog {
 
         jLabel5.setText("Price per Night");
 
-        priceTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("¤#,##0.00"))));
-        priceTextField.setText("0");
+        priceTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         priceTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 priceTextFieldActionPerformed(evt);
@@ -174,7 +178,6 @@ public class RoomOptions extends javax.swing.JDialog {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(numOfBedsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -216,14 +219,26 @@ public class RoomOptions extends javax.swing.JDialog {
         // TODO add your handling code here:
         if(newRoom)
         {
-            //currentRoom = new Room(roomNumberField.getText(), priceTextField.getText().)
+            currentRoom = new Room(roomNumberField.getText(), Double.parseDouble(priceTextField.getText()), 1);
+            Hotel hotel = Hotel.getInstance();
+            hotel.addRoom(currentRoom);
         }
         else
         {
-            
+            currentRoom.setPrice(Double.parseDouble(priceTextField.getText()));
+            currentRoom.setRoomInfo(1);
+            currentRoom.setRoomNumber(roomNumberField.toString());
         }
-            
+        
+        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_AcceptButtonActionPerformed
+
+    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_CancelButtonActionPerformed
 
     /**
      * @param args the command line arguments

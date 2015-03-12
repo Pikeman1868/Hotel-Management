@@ -5,6 +5,8 @@
  */
 package hotelgui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author PikeMobile
@@ -53,5 +55,24 @@ public class GuestUser implements UserFeatures{
     public void addDiscount()
     {
         
+    }
+    
+    /**
+     * Produce a form to Create a new room.
+     */
+    public void createRoom()
+    {
+        //RoomOptions roomCreator = new RoomOptions(null, true);
+        //roomCreator.setVisible(true);
+        JOptionPane.showMessageDialog(null, "This feature is for Admin use only");
+    }
+    
+    /**
+     * Update a current Room's features.
+     * @param room 
+     */
+    public void updateRoom(Room room)
+    {
+        JOptionPane.showMessageDialog(null, "This feature is for Admin use only");
     }
 }

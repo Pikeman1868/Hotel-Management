@@ -42,4 +42,16 @@ public interface UserFeatures {
      * 
      */
     public void addDiscount();
+    
+    /**
+     * Produce a form to Create a new room.
+     */
+    public void createRoom();
+    
+    /**
+     * Update a current Room's features.
+     * @param room 
+     */
+    public void updateRoom(Room room);
+
 }

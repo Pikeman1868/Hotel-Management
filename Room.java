@@ -22,7 +22,7 @@ public class Room {
     {
         roomNumber = roomNum;
         price = cost;
-        roomInfo = roomInfo;
+        roomInfo = info;
         
     }
     /**
