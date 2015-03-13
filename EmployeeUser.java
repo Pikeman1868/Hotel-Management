@@ -11,21 +11,17 @@ import javax.swing.JOptionPane;
  *
  * @author PikeMobile
  */
-public class EmployeeUser implements UserFeatures{
+public class EmployeeUser extends UserFeatures{
     
-    public void getUserTable()
-    {
-        JOptionPane.showMessageDialog(null, "This feature is for Admin use only");
-    }
-    
+
     /**
      * Check in the desired User to the selected Room.
      * @param user 
      * @param Room
      */
-    public void checkIn(UserInformation user/*, Room*/)
+    public boolean checkIn(UserInformation user/*, Room*/)
     {
-        
+        return false;
     }
     
     /**
@@ -33,28 +29,9 @@ public class EmployeeUser implements UserFeatures{
      * @param user 
      * @param Room
      */
-    public void checkOut(UserInformation user/*, Room*/)
+    public boolean checkOut(UserInformation user/*, Room*/)
     {
-        
-    }
-    
-    /**
-     * Set a room's price
-     * @param Room
-     * @param price
-     */
-    public void setPrice(/*Room, int price*/)
-    {
-        
-    }
-    
-    /**
-     * Add a discount to a customer's price.
-     * 
-     */
-    public void addDiscount()
-    {
-        
+        return false;
     }
     
     /**

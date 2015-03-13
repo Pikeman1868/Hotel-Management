@@ -25,17 +25,25 @@ import javax.swing.table.DefaultTableModel;
 public class MainWindow extends javax.swing.JFrame {
 
     private SQLiteJDBC database = SQLiteJDBC.getInstance();
-    private final UserInformation guest = new UserInformation("Guest", "Guest", "", "Guest", "Customer");
-    private UserInformation user = guest;
+    //private final UserInformation guest = new UserInformation("Guest", "Guest", "", "Guest", "Customer");
+    //private UserInformation user = guest;
+    static private UserInformation user = null;
     private Hotel hotel = Hotel.getInstance();
     
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
+    public MainWindow(UserInformation aUser) {
         initComponents();
         database = SQLiteJDBC.getInstance();
-        
+        user = aUser;
+        if(user.GetEmailAddress().equals("Admin") && user.GetPassword().equals(""))
+        {
+            CreateUser updateUser = new CreateUser(this, true);
+            updateUser.setFields(user);
+            updateUser.setVisible(true);
+        }
+        nameLabel.setText(user.GetFirstName());
     }
 
     /**
@@ -48,88 +56,88 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jSeparator2 = new javax.swing.JSeparator();
-        emailTextField = new javax.swing.JTextField();
-        passwordTextField = new javax.swing.JPasswordField();
-        loginButton = new javax.swing.JButton();
         nameLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        logoutButton = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        CheckInButton = new javax.swing.JButton();
+        CheckOutButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        createUserMenu = new javax.swing.JMenuItem();
-        userTable = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        quitMenu = new javax.swing.JMenuItem();
+        FileMenu = new javax.swing.JMenu();
+        logoutItem = new javax.swing.JMenuItem();
+        quit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        createUserMenu = new javax.swing.JMenuItem();
+        userTable = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        emailTextField.setName("Email Address"); // NOI18N
-        emailTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailTextFieldActionPerformed(evt);
-            }
-        });
-
-        passwordTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTextFieldActionPerformed(evt);
-            }
-        });
-
-        loginButton.setText("Login");
-        loginButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginButtonActionPerformed(evt);
-            }
-        });
 
         nameLabel.setText("Guest");
 
         jLabel2.setText("Hello:");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 943, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 646, Short.MAX_VALUE)
-        );
-
-        jMenu1.setText("File");
-
-        createUserMenu.setText("Create User");
-        createUserMenu.addActionListener(new java.awt.event.ActionListener() {
+        logoutButton.setText("Logout");
+        logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createUserMenuActionPerformed(evt);
+                logoutButtonActionPerformed(evt);
             }
         });
-        jMenu1.add(createUserMenu);
 
-        userTable.setText("User Table");
-        userTable.addActionListener(new java.awt.event.ActionListener() {
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jTabbedPane1.addTab("Reservations", jScrollPane2);
+
+        CheckInButton.setText("Check In");
+        CheckInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userTableActionPerformed(evt);
+                CheckInButtonActionPerformed(evt);
             }
         });
-        jMenu1.add(userTable);
-        jMenu1.add(jSeparator1);
 
-        quitMenu.setText("Quit");
-        quitMenu.addActionListener(new java.awt.event.ActionListener() {
+        CheckOutButton.setText("Check Out");
+        CheckOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quitMenuActionPerformed(evt);
+                CheckOutButtonActionPerformed(evt);
             }
         });
-        jMenu1.add(quitMenu);
 
-        jMenuBar1.add(jMenu1);
+        FileMenu.setText("File");
+
+        logoutItem.setText("Logout");
+        logoutItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutItemActionPerformed(evt);
+            }
+        });
+        FileMenu.add(logoutItem);
+
+        quit.setText("Quit");
+        quit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitActionPerformed(evt);
+            }
+        });
+        FileMenu.add(quit);
+
+        jMenuBar1.add(FileMenu);
 
         jMenu2.setText("Room Manager");
 
@@ -148,11 +156,32 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+        jMenu2.add(jSeparator1);
 
         jMenuItem3.setText("Search Room");
         jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("User Options");
+
+        createUserMenu.setText("Create User");
+        createUserMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createUserMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(createUserMenu);
+
+        userTable.setText("User Table");
+        userTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userTableActionPerformed(evt);
+            }
+        });
+        jMenu1.add(userTable);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -161,127 +190,117 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTabbedPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(CheckInButton)
+                        .addGap(32, 32, 32)
+                        .addComponent(CheckOutButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 490, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(loginButton)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))))
+                        .addGap(31, 31, 31)
+                        .addComponent(logoutButton)
+                        .addGap(17, 17, 17)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(loginButton)
-                    .addComponent(nameLabel)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 34, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nameLabel)
+                        .addComponent(jLabel2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(CheckInButton)
+                        .addComponent(CheckOutButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
-        // TODO add your handling code here:
-        //System.out.println(jTextField1.getText());
-        //System.out.println(jPasswordField1.getText());
-    }//GEN-LAST:event_emailTextFieldActionPerformed
-
     private void createUserMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserMenuActionPerformed
         // TODO add your handling code here:
-        CreateUser createUserForm = new CreateUser(this, true);
-        createUserForm.setVisible(true);
+        user.createUser();
     }//GEN-LAST:event_createUserMenuActionPerformed
 
-    private void quitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuActionPerformed
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
-        database.close();
-        System.exit(0);
-    }//GEN-LAST:event_quitMenuActionPerformed
-
-    private void passwordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTextFieldActionPerformed
-
-    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
+//        
+//        if(!user.isLoggedIn())//if(State == LOGGEDOUT)
+//        {
+//            System.out.println("Username: " + emailTextField.getText());
+//            System.out.println("Password: " + passwordTextField.getText());
+//            if(emailTextField.getText().equals(""))
+//            {
+//                
+//            }
+//            else
+//            {
+//                user = database.getUserInformation(emailTextField.getText());
+//                try{
+//                    if(user.login(emailTextField.getText(), passwordTextField.getText()))
+//                    {
+//                        //State = LOGGEDIN;
+//                        //System.out.println("Welcome: " + user.GetFirstName());
+//                        this.update();
+//                    }
+//                    else
+//                    {
+//                        user.logout();//State = LOGGEDOUT;
+//                        user = guest;
+//                        this.update();
+//                    }
+//                }
+//                catch(Exception e)
+//                {
+//                   JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+//                   user = guest;
+//                   this.update();
+//                }
+//            }
+//        }
+//        else if(user.isLoggedIn())//(State == LOGGEDIN)
+//        {
+//            user.logout();//State = LOGGEDOUT;
+//            System.out.println("Goodbye: " + user.GetFirstName());
+//            this.update();
+//        }
+        user.logout();
+        UserLogin login = UserLogin.getInstance();
+        login.setVisible(true);
+        this.dispose();
         
-        if(!user.isLoggedIn())//if(State == LOGGEDOUT)
-        {
-            System.out.println("Username: " + emailTextField.getText());
-            System.out.println("Password: " + passwordTextField.getText());
-            if(emailTextField.getText().equals(""))
-            {
-                
-            }
-            else
-            {
-                user = database.getUserInformation(emailTextField.getText());
-                try{
-                    if(user.login(emailTextField.getText(), passwordTextField.getText()))
-                    {
-                        //State = LOGGEDIN;
-                        //System.out.println("Welcome: " + user.GetFirstName());
-                        this.update();
-                    }
-                    else
-                    {
-                        user.logout();//State = LOGGEDOUT;
-                        user = guest;
-                        this.update();
-                    }
-                }
-                catch(Exception e)
-                {
-                   JOptionPane.showMessageDialog(null, "Invalid Username or Password");
-                   user = guest;
-                   this.update();
-                }
-            }
-        }
-        else if(user.isLoggedIn())//(State == LOGGEDIN)
-        {
-            user.logout();//State = LOGGEDOUT;
-            System.out.println("Goodbye: " + user.GetFirstName());
-            this.update();
-        }
-        
-        
-    }//GEN-LAST:event_loginButtonActionPerformed
+    }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void update()
     {
-        if(user.isLoggedIn())//(State == LOGGEDIN)
-        {
-            emailTextField.setEnabled(false);
-            passwordTextField.setEnabled(false);
-            nameLabel.setText(user.GetFirstName());
-            loginButton.setText("Logout");
-        }
-        else if(!user.isLoggedIn())//(State == LOGGEDOUT)
-        {
-            user = guest;
-            emailTextField.setEnabled(true);
-            passwordTextField.setEnabled(true);
-            emailTextField.setText(null);
-            passwordTextField.setText(null);
-            nameLabel.setText(user.GetFirstName());
-            loginButton.setText("Login");
-        }
+//        if(user.isLoggedIn())//(State == LOGGEDIN)
+//        {
+//            emailTextField.setEnabled(false);
+//            passwordTextField.setEnabled(false);
+//            nameLabel.setText(user.GetFirstName());
+//            loginButton.setText("Logout");
+//        }
+//        else if(!user.isLoggedIn())//(State == LOGGEDOUT)
+//        {
+//            user = guest;
+//            emailTextField.setEnabled(true);
+//            passwordTextField.setEnabled(true);
+//            emailTextField.setText(null);
+//            passwordTextField.setText(null);
+//            nameLabel.setText(user.GetFirstName());
+//            loginButton.setText("Login");
+//        }
     }
     
     private void userTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTableActionPerformed
@@ -316,6 +335,27 @@ public class MainWindow extends javax.swing.JFrame {
         user.updateRoom(new Room("314", 120.0, 4));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void logoutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutItemActionPerformed
+        // TODO add your handling code here:
+        user.logout();
+    }//GEN-LAST:event_logoutItemActionPerformed
+
+    private void quitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitActionPerformed
+        // TODO add your handling code here:
+        //user.logout();
+        System.exit(0);
+    }//GEN-LAST:event_quitActionPerformed
+
+    private void CheckInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckInButtonActionPerformed
+        // TODO add your handling code here:
+        user.checkIn(new UserInformation("test", "test", "test", "test", "Customer"));
+    }//GEN-LAST:event_CheckInButtonActionPerformed
+
+    private void CheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckOutButtonActionPerformed
+        // TODO add your handling code here:
+        user.checkOut(new UserInformation("test", "test", "test", "test", "Customer"));
+    }//GEN-LAST:event_CheckOutButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -346,14 +386,16 @@ public class MainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainWindow().setVisible(true);
+                new MainWindow(user).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CheckInButton;
+    private javax.swing.JButton CheckOutButton;
+    private javax.swing.JMenu FileMenu;
     private javax.swing.JMenuItem createUserMenu;
-    private javax.swing.JTextField emailTextField;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -361,13 +403,15 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JButton loginButton;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JButton logoutButton;
+    private javax.swing.JMenuItem logoutItem;
     private javax.swing.JLabel nameLabel;
-    private javax.swing.JPasswordField passwordTextField;
-    private javax.swing.JMenuItem quitMenu;
+    private javax.swing.JMenuItem quit;
     private javax.swing.JMenuItem userTable;
     // End of variables declaration//GEN-END:variables
 }

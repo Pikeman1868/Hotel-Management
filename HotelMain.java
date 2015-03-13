@@ -15,9 +15,12 @@ public class HotelMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        MainWindow main = new MainWindow();
-        main.setVisible(true);
+
+        UserInformation admin = new UserInformation("Hotel", "Admin", "", "Admin", "Admin");
+        SQLiteJDBC database = SQLiteJDBC.getInstance();
+        database.insert("USERS", admin);
+        UserLogin login = UserLogin.getInstance();
+        login.setVisible(true);
     }
     
 }

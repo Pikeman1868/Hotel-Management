@@ -91,6 +91,7 @@ public class UserInformation {
             password = temp;
             return false;
         }
+        
         return true;
     }
     
@@ -101,13 +102,17 @@ public class UserInformation {
     
     public void logout()
     {
+        feature.dispose();
         loggedin = false;
     }
     
     public boolean login(String name, String Password)
     {
-        if(emailAddress.equals(name) && password.equals(Password))
+        SQLiteJDBC database = SQLiteJDBC.getInstance();
+        //System.out.println("Database password: " + database.getPassword(this));
+        if(emailAddress.equals(name) && Password.equals(database.getPassword(this))/*password.equals(Password)*/)
         {
+            feature.execute(this);
             return loggedin = true;
         }
         return loggedin = false;
@@ -203,5 +208,23 @@ public class UserInformation {
     public void updateRoom(Room room)
     {
         feature.updateRoom(room);
+    }
+    
+    /**
+     * Create a new User Account
+     */
+    public void createUser()
+    {
+        feature.createUser();
+    }
+    
+    public boolean checkIn(UserInformation temp)
+    {
+        return feature.checkIn(temp);
+    }
+    
+    public boolean checkOut(UserInformation temp)
+    {
+        return feature.checkOut(temp);
     }
 }

@@ -11,29 +11,9 @@ import javax.swing.JOptionPane;
  *
  * @author PikeMobile
  */
-public class GuestUser implements UserFeatures{
+public class GuestUser extends UserFeatures{
     
     public void getUserTable()
-    {
-        
-    }
-    
-    /**
-     * Check in the desired User to the selected Room.
-     * @param user 
-     * @param Room
-     */
-    public void checkIn(UserInformation user/*, Room*/)
-    {
-        
-    }
-    
-    /**
-     * Check out the desired User from the selected Room.
-     * @param user 
-     * @param Room
-     */
-    public void checkOut(UserInformation user/*, Room*/)
     {
         
     }

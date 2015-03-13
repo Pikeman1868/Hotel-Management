@@ -189,6 +189,25 @@ public class SQLiteJDBC
     }
     
     /**
+     * 
+     */
+    public String getPassword(UserInformation user)
+    {
+        try
+        {
+            stmt = c.createStatement();
+            String sql = "SELECT * FROM USERS WHERE EMAILADDRESS = '"
+                   + user.GetEmailAddress() + "';";
+            ResultSet rs = stmt.executeQuery( sql);
+            return rs.getString("PASSWORD");
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+        
+    }
+    /**
      * Update the Data base row.
      * @param User
      * @return boolean
@@ -198,15 +217,17 @@ public class SQLiteJDBC
       try
       {
           stmt = c.createStatement();
-          String sql = "UPDATE USERS set PASSWORD = '" + user.GetPassword() +
-                  "' where EMAILADDRESS='" + user.GetEmailAddress() +"';";
+          String sql = "UPDATE USERS SET PASSWORD = '" + user.GetPassword() +
+                  "' where EMAILADDRESS = '" + user.GetEmailAddress() + "';";
           stmt.executeUpdate(sql);
+          //stmt.close();
           c.commit();
           return true;
       } 
-      catch ( Exception e ) 
+      catch ( SQLException e ) 
       {
           System.out.println("Failed to change user Password.");
+          System.out.println(user.GetEmailAddress() + " " + user.GetPassword());
           return false;
         //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         //System.exit(0);
@@ -295,7 +316,7 @@ public class SQLiteJDBC
         try{
             System.out.println("Attempting to open Database...");
            Class.forName("org.sqlite.JDBC");
-          c = DriverManager.getConnection("jdbc:sqlite:Hotel.db");
+          c = DriverManager.getConnection("jdbc:sqlite:Users.sqlite");//Hotel.db
           c.setAutoCommit(true);
           System.out.println("Opened database successfully");
           CreateUsersTable();

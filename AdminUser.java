@@ -17,7 +17,7 @@ import javax.swing.JTable;
  *
  * @author PikeMobile
  */
-public class AdminUser implements UserFeatures {
+public class AdminUser extends UserFeatures {
     
     public void getUserTable()
     {
@@ -61,9 +61,9 @@ public class AdminUser implements UserFeatures {
      * @param user 
      * @param Room
      */
-    public void checkIn(UserInformation user/*, Room*/)
+    public boolean checkIn(UserInformation user/*, Room*/)
     {
-        
+        return false;
     }
     
     /**
@@ -71,9 +71,9 @@ public class AdminUser implements UserFeatures {
      * @param user 
      * @param Room
      */
-    public void checkOut(UserInformation user/*, Room*/)
+    public boolean checkOut(UserInformation user/*, Room*/)
     {
-        
+        return false;
     }
     
     /**
@@ -112,5 +112,14 @@ public class AdminUser implements UserFeatures {
     {
         RoomOptions roomCreator = new RoomOptions(null, true, room);
         roomCreator.setVisible(true);
+    }
+    
+    /**
+     * Produce a dialog to create a new User Account.
+     */
+    public void createUser()
+    {
+        CreateUser createUserForm = new CreateUser(null, true);
+        createUserForm.setVisible(true);
     }
 }

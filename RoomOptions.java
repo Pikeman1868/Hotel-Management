@@ -11,6 +11,8 @@ package hotelgui;
  */
 public class RoomOptions extends javax.swing.JDialog {
 
+    enum BEDS {Twin,Queen, King};
+    enum SMOKE {Smoking, Non_Smoking};
     Room currentRoom = null;
     boolean newRoom = true;
     /**

@@ -69,6 +69,7 @@ public class CreateUser extends javax.swing.JDialog {
         jLabel6.setText("Account Type");
 
         createUserButton.setText("Create User");
+        createUserButton.setName("Create User"); // NOI18N
         createUserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createUserButtonActionPerformed(evt);
@@ -155,12 +156,7 @@ public class CreateUser extends javax.swing.JDialog {
     }//GEN-LAST:event_accountTypeBoxActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
-        /*firstNameTextField.setText(null);
-        lastNameTextField.setText(null);
-        emailTextField.setText(null);
-        passwordTextField.setText(null);
-        confirmTextField.setText(null);*/
+
         this.clearFields();
     }//GEN-LAST:event_clearButtonActionPerformed
 
@@ -181,7 +177,7 @@ public class CreateUser extends javax.swing.JDialog {
                 return "Customer";
             case 1:
                 return "Employee";
-            case 3:
+            case 2:
                 return "Admin";
             default:
                 return null;        
@@ -205,30 +201,77 @@ public class CreateUser extends javax.swing.JDialog {
         }
         else
         {
-        user = new UserInformation(firstNameTextField.getText(), lastNameTextField.getText(), 
-                    passwordTextField.getText(), emailTextField.getText(), convertAccountType());
-        System.out.println("Adding new User...");
-        System.out.println("First name: " + firstNameTextField.getText() +
-                           "\nLast Name: " + lastNameTextField.getText() + 
-                           "\nPassword: " + passwordTextField.getText()+ 
-                           "\nEmail: " + emailTextField.getText()+ 
-                           "\nAccount Type: " + convertAccountType() +
-                            "\n");
-        SQLiteJDBC database = SQLiteJDBC.getInstance();
-            if(database.insert("USERS", user))
+            SQLiteJDBC database = SQLiteJDBC.getInstance();
+            if(createUserButton.getName().equals("Update"))
             {
-                this.clearFields();
-                this.setVisible(false);
-                this.dispose();
+                //user.SetPassword(emailTextField.getText());
+                if(user.updatePassword(passwordTextField.getText()))//database.updatePassword(user))
+                {
+                    this.dispose();
+                }
             }
             else
             {
-                JOptionPane.showMessageDialog(null, "This username has already been taken.\nPlease Select another.");
+                user = new UserInformation(firstNameTextField.getText(), lastNameTextField.getText(), 
+                            passwordTextField.getText(), emailTextField.getText(), convertAccountType());
+                System.out.println("Adding new User...");
+                System.out.println("First name: " + firstNameTextField.getText() +
+                                   "\nLast Name: " + lastNameTextField.getText() + 
+                                   "\nPassword: " + passwordTextField.getText()+ 
+                                   "\nEmail: " + emailTextField.getText()+ 
+                                   "\nAccount Type: " + convertAccountType() +
+                                    "\n");
+                    if(database.insert("USERS", user))
+                    {
+                        this.clearFields();
+                        this.setVisible(false);
+                        this.dispose();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "This username has already been taken.\nPlease Select another.");
+                    }
             }
         }
         
     }//GEN-LAST:event_createUserButtonActionPerformed
-
+    
+    /**
+     * 
+     */
+    public void setFields(UserInformation aUser)
+    {
+        user = aUser;
+        accountTypeBox.setSelectedIndex(2);
+        this.lockAccountType();
+        firstNameTextField.setText(user.GetFirstName());
+        lastNameTextField.setText(user.GetLastName());
+        emailTextField.setText(user.GetEmailAddress());
+        accountTypeBox.setEnabled(false);
+        firstNameTextField.setEnabled(false);
+        lastNameTextField.setEnabled(false);
+        emailTextField.setEnabled(false);
+        createUserButton.setText("Update");
+        clearButton.setEnabled(false);
+        createUserButton.setName("Update");
+    }
+    
+    /**
+     * Lock the Option to change account types
+     */
+    public void lockAccountType()
+    {
+        accountTypeBox.setEnabled(false);
+    }
+    
+    /**
+     * Lock the Option to change account types
+     */
+    public void unlockAccountType()
+    {
+        accountTypeBox.setEnabled(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
